@@ -1,0 +1,193 @@
+{
+  "name": "image agent",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "image",
+        "operation": "analyze",
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "text": "\nPlease analyze the image thoroughly and provide a detailed description covering all notable visual elements. Include the following categories where applicable:\n\nFocus specifically on the visible facial expression of the person. Based on commonly understood cues (smiling, frowning, eye shape, brows), what emotion is most likely being expressed? Please describe the features that led to your conclusion.\n\nGestures and body language: Describe any visible hand gestures (e.g., thumbs up, peace sign, number of fingers held up), posture, or body cues.\n\nObjects held: Describe any items the person is holding (e.g., phone, bottle, book), including shape, type, color, and any visible brand or logo (e.g., Apple logo on an iPhone).\n\nClothing and Fashion\nClothing items: List all visible clothing, specifying type (e.g., t-shirt, jacket), color, material, pattern, and fit.\n\nStyle assessment: What style is conveyed (e.g., casual, formal, sporty, trendy, professional)?\n\nAccessories\nDescribe any visible accessories such as:\n\nGlasses\n\nWatches\n\nJewelry\n\nHeadwear (e.g., caps, beanies)\n\nFootwear\n\nBags, belts, or other wearable items\nInclude material, color, and any distinctive features or branding.\n\nLogos and Branding\nIdentify and describe any visible logos, brand names, or insignias on:\n\nClothing\n\nAccessories\n\nHand-held items (e.g., iPhones, soda cans, headphones)\n\nFootwear\nInclude brand names, logo locations, and stylistic elements.\n\nScene and Background\nProvide details about the environment or setting (e.g., indoor, outdoor, lighting conditions).\n\nMention any visible furniture, decor, signage, or context clues (e.g., office, bedroom, park).\n\nIf applicable, note reflections, screens, or background people/items.\n\n",
+        "inputType": "base64",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -300,
+        260
+      ],
+      "id": "b2e6c01b-d1b8-4560-953d-f819e059dc45",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "pVZtjtArJrY0N9aA",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -120,
+        20
+      ],
+      "id": "436050cf-da05-4b82-9a16-96fa0a00b7a5",
+      "name": "Execute Command",
+      "executeOnce": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2a76788b-f282-450e-a1a7-bd660fcece7f",
+              "name": "image_path",
+              "value": "={{ $json.stdout }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        20
+      ],
+      "id": "7180e87f-8f9a-469c-80eb-b4cf484d02b0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fileSelector": "={{ $json[\"image_path\"] }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        260,
+        20
+      ],
+      "id": "87dfe225-e759-42b9-afee-63210fe4d2b7",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -320,
+        20
+      ],
+      "id": "4e20b71b-98e1-4d51-9428-572a279781b6",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0cd16e3d-696f-408a-a4cb-6549f10b5265",
+              "name": "lastObject",
+              "value": "={{ $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -120,
+        260
+      ],
+      "id": "197729d7-ab1e-419b-a8a7-7db9f6645fc0",
+      "name": "store to memory"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "store to memory",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "store to memory": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "57c2c303-6e5a-41ff-a10e-7509961820c4",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6fad63cfe1150588c1687ad0417552b31a7abff86d996285cbdc32fee45e31fd"
+  },
+  "id": "2548K5VfxadG6vqW",
+  "tags": []
+}
