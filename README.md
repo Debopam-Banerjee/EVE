@@ -7,8 +7,6 @@ Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable per
 * Store and recall **contextual memories**
 * Interact across **email, calendar, contacts, and content tools**
 
-GitHub Repository: [https://github.com/Debopam-Banerjee/EVE/tree/main](https://github.com/Debopam-Banerjee/EVE/tree/main)
-
 ---
 
 ## 💪 Features
