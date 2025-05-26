@@ -7,9 +7,11 @@ Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable per
 * Store and recall **contextual memories**
 * Interact across **email, calendar, contacts, and content tools**
 
+GitHub Repository: [https://github.com/Debopam-Banerjee/EVE/tree/main](https://github.com/Debopam-Banerjee/EVE/tree/main)
+
 ---
 
-## Features
+## 💪 Features
 
 * Visual recognition via webcam using OpenCV
 * Emotion detection with GPT-4o based on facial expressions
@@ -24,8 +26,8 @@ Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable per
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/eve-assistant.git
-cd eve-assistant
+git clone https://github.com/Debopam-Banerjee/EVE.git
+cd EVE
 ```
 
 ### 2. Install n8n Locally
@@ -51,12 +53,10 @@ Access the UI at `http://localhost:5678`
 In the n8n UI:
 
 * Go to **Workflows > Import**
-* Import the following JSON files from this repo:
+* Import the JSON files from this repo:
 
   * `image_agent.json`
-  * `EVE.json`
-  * `.json`
-  * 
+  * Any additional emotion or memory-related workflows
 
 ### 4. Python Webcam Script Setup
 
@@ -76,36 +76,20 @@ This will capture a frame, optimize it, and output a base64 string for imageAgen
 
 > The script includes auto-exposure stabilization and JPEG compression for faster GPT-4o upload.
 
-### 5. Spotify Integration (Optional)
-
-To auto-play music:
-
-* Open your Spotify playlist link
-* Or use the Spotify Web API (requires OAuth setup)
-
-Simple example (Windows):
-
-```bash
-start "" "https://open.spotify.com/playlist/YOUR_PLAYLIST_ID"
-```
-
 ---
 
 ## 🔄 How It Works
 
 1. **Webcam Triggered:** A Python script captures your webcam image
 2. **ImageAgent:** Sends image to GPT-4o for analysis
-3. **Emotion Check:** If you're sad/stressed, Eve offers a break or lo-fi
-4. **Spotify:** Opens your playlist via command or API
-5. **Memory:** Logs emotion + response time for future use
+3. **Emotion Check:** Returns emotional state (e.g., "neutral", "sad", "happy")
+4. **Memory:** Logs emotion + timestamp for contextual interaction later
 
 ---
 
-## 📚 Files Included
+## 📁 Files Included
 
 * `image_agent.json` - n8n flow for webcam input + GPT-4o analysis
-* `emotion_response.json` - n8n logic to handle mood-based triggers
-* `spotify_trigger.json` - Optional logic for opening your favorite lo-fi beats
 * `capture_and_encode.py` - Python script for webcam capture and base64 conversion
 
 ---
