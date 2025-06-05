@@ -29,13 +29,7 @@ Eve can:
 ```bash
 git clone https://github.com/Debopam-Banerjee/EVE.git
 cd EVE
-## ⚙️ Quick Start
 
-### 1. Clone the Repository
-
-```bash
-git clone https://github.com/Debopam-Banerjee/EVE.git
-cd EVE
 ````
 
 ### 2. Run `n8n` Locally
