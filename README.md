@@ -245,7 +245,7 @@ MIT License. Built for fun, productivity, and peace of mind.
 
 ## ✨ Demo
 
-🎥 A full walkthrough video is coming soon. Stay tuned!
+[🎥 A full walkthrough video is coming soon. Stay tuned!](https://www.linkedin.com/feed/update/urn:li:activity:7335722019876913152/) 
 
 ---
 
