@@ -1,93 +1,68 @@
+````md
 # Eve: The Ultimate Personal Assistant (n8n + GPT + Python)
 
 <img width="1120" alt="image" src="https://github.com/user-attachments/assets/a0d8b653-bc87-4f9f-92ca-445ad2a148fc" />
 
+Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable personal assistant powered by **n8n**, **OpenAI GPT-4o**, and **Python**.
 
-
-Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable personal assistant powered by **n8n**, **OpenAI GPT-4o**, and **Python**. Eve can:
-
-* Analyze your **facial expression** and mood
-* Understand your **environment** using your webcam
-* Store and recall **contextual memories**
-* Interact across **email, calendar, contacts, and content tools**
+Eve can:
+- Analyze your **facial expression** and mood
+- Understand your **environment** using your webcam
+- Store and recall **contextual memories**
+- Interact across **email, calendar, contacts, and content tools**
 
 ---
 
 ## 💪 Features
 
-* Visual recognition via webcam using OpenCV
-* Emotion detection with GPT-4o based on facial expressions
-* Scene, object, and appearance analysis
-* Custom prompt routing and memory logging
-* Modular workflows you can import into n8n
+- Visual recognition via webcam using OpenCV
+- Emotion detection with GPT-4o based on facial expressions
+- Scene, object, and appearance analysis
+- Custom prompt routing and memory logging
+- Modular workflows importable into n8n
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙️ Quick Start
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/Debopam-Banerjee/EVE.git
 cd EVE
-```
+````
 
-### 2. Install n8n Locally
+### 2. Run `n8n` Locally
 
-Install globally using npm:
+Install globally:
 
 ```bash
 npm install -g n8n
 ```
 
-Run n8n:
+Start:
 
 ```bash
 n8n
 ```
 
-Access the UI at `http://localhost:5678`
+Then visit: [http://localhost:5678](http://localhost:5678)
 
-> You can also use [n8n desktop](https://n8n.io/download) if you prefer a GUI installer.
+### 3. Import Workflows into `n8n`
 
-### 3. Import Workflows
+Go to **Workflows > Import** in the UI, and upload the `.json` files from the `n8n agents/` folder:
 
-In the n8n UI:
-
-* Go to **Workflows > Import**
-* Import the JSON files from this repo:
-
-  * `image_agent.json`
-  * Any additional emotion or memory-related workflows
-
-### 4. Python Webcam Script Setup
-
-Install dependencies:
-
-```bash
-pip install opencv-python
-```
-
-Run the webcam capture script manually or via n8n:
-
-```bash
-python3 capture_and_encode.py
-```
-
-This will capture a frame, optimize it, and output a base64 string for imageAgent.
-
-> The script includes auto-exposure stabilization and JPEG compression for faster GPT-4o upload.
-
+* `image_agent.json`
+* `__Email_Agent.json`, `__Contact_Agent.json`, etc.
 
 ---
 
-````md
 ## ⚙️ Local Development Setup
 
 <details>
 <summary>🔐 Step 0: Create a <code>.env</code> File</summary>
 
-Create a `.env` file at the root (or inside `/backend` and `/frontend`) with the following values:
+Create a `.env` file at the root or inside `/backend` and `/frontend`:
 
 ```env
 # Backend .env
@@ -98,11 +73,13 @@ AGENT_ID=your-agent-id
 
 # Frontend (Vite)
 VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
-````
+```
 
-> 🔑 [OpenAI API](https://platform.openai.com/account/api-keys)
-> 🔊 [ElevenLabs API](https://elevenlabs.io/)
-> 🗺️ [Google Maps API](https://console.cloud.google.com/): Enable **Maps JavaScript API**
+🔗 Get your keys:
+
+* [OpenAI API Key](https://platform.openai.com/account/api-keys)
+* [ElevenLabs API](https://elevenlabs.io/)
+* [Google Maps API Key](https://console.cloud.google.com/): Enable **Maps JavaScript API**
 
 </details>
 
@@ -146,7 +123,7 @@ VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
    uvicorn app:app --reload
    ```
 
-Backend will be live at: [http://localhost:8000](http://localhost:8000)
+Backend will be available at: [http://localhost:8000](http://localhost:8000)
 
 </details>
 
@@ -167,13 +144,13 @@ Backend will be live at: [http://localhost:8000](http://localhost:8000)
    npm install
    ```
 
-3. Start the development server:
+3. Start the frontend server:
 
    ```bash
    npm run dev
    ```
 
-Frontend will be available at: [http://localhost:5173](http://localhost:5173)
+Frontend will run at: [http://localhost:5173](http://localhost:5173)
 
 </details>
 
@@ -182,43 +159,43 @@ Frontend will be available at: [http://localhost:5173](http://localhost:5173)
 <details>
 <summary>⚙️ Step 3: Start <code>n8n</code> Locally</summary>
 
-Install n8n globally (if not already installed):
+Install globally (if not already done):
 
 ```bash
 npm install -g n8n
 ```
 
-Start the server:
+Start n8n:
 
 ```bash
 n8n
 ```
 
-Access the UI at: [http://localhost:5678](http://localhost:5678)
+Then open: [http://localhost:5678](http://localhost:5678)
 
-> Optional: Use the [n8n desktop app](https://n8n.io/download) for a GUI-based experience.
+> Or use the [n8n desktop app](https://n8n.io/download) for a GUI-based experience.
 
 </details>
 
 ---
 
 <details>
-<summary>🧠 Step 4: Import n8n Workflows</summary>
+<summary>🧠 Step 4: Import Workflows</summary>
 
 1. Open [http://localhost:5678](http://localhost:5678)
 2. Go to **Workflows > Import**
-3. Import the JSON workflows from the `n8n agents/` folder:
+3. Import JSON workflows from the `n8n agents/` folder:
 
    * `image_agent.json`
    * `__Email_Agent.json`
    * `__Contact_Agent.json`
-   * (and others…)
+   * And others…
 
 </details>
 
 ---
 
-## ✅ Summary
+## ✅ Project Summary
 
 | Component  | Tech              | URL                                            |
 | ---------- | ----------------- | ---------------------------------------------- |
@@ -228,26 +205,29 @@ Access the UI at: [http://localhost:5678](http://localhost:5678)
 
 ---
 
-
 ## 🔄 How It Works
 
 1. **Webcam Triggered:** A Python script captures your webcam image
-2. **ImageAgent:** Sends image to GPT-4o for analysis
-3. **Emotion Check:** Returns emotional state (e.g., "neutral", "sad", "happy")
-4. **Memory:** Logs emotion + timestamp for contextual interaction later
+2. **ImageAgent:** Sends image to GPT-4o for visual analysis
+3. **Emotion Check:** Returns your emotional state (e.g., "neutral", "happy")
+4. **Memory Module:** Logs emotion + timestamp for context-aware responses
 
 ---
 
-## 📁 Files Included
+## 📁 Key Files
 
-* `image_agent.json` - n8n flow for webcam input + GPT-4o analysis
-* `capture_and_encode.py` - Python script for webcam capture and base64 conversion
+* `backend/` — FastAPI app with assistants
+* `frontend/` — Vite + React interface with TTS, webcam, map, and messaging UI
+* `n8n agents/` — JSON workflows for automations and AI routing
+* `capture_and_encode.py` — Webcam capture + base64 encoder for GPT
+* `.env.example` — Sample environment file
 
 ---
 
 ## 📢 Contributing
 
-Got an idea for another assistant mode (e.g., "hydration reminder" or "ambient noise detector")? PRs welcome!
+Got an idea for another assistant mode (e.g., "hydration reminder" or "ambient noise detector")?
+Pull requests are welcome!
 
 ---
 
@@ -259,8 +239,17 @@ MIT License. Built for fun, productivity, and peace of mind.
 
 ## ✨ Demo
 
-Stay tuned! A full walkthrough video is coming soon.
+🎥 A full walkthrough video is coming soon. Stay tuned!
 
 ---
 
-Need help or want a personalized version? Open an issue or email me directly.
+## 💬 Questions?
+
+Open an issue or contact me directly for collaboration or customization.
+
+```
+
+---
+
+Let me know if you'd like a `README.md` badge header (license, build, tech stack), or if you want to auto-generate `.env.example` and include it in the repo.
+```
