@@ -1,4 +1,4 @@
-# Eve: The Ultimate Personal Assistant (n8n + GPT + Python)
+# Eve: The Ultimate Personal Assistant (n8n + GPT + Python + Elevenlabs conversational ai and STT)
 
 <img width="1120" alt="image" src="https://github.com/user-attachments/assets/a0d8b653-bc87-4f9f-92ca-445ad2a148fc" />
 
