@@ -1,0 +1,205 @@
+{
+  "name": "maps",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -500,
+        140
+      ],
+      "id": "fe4c7379-ee82-4d79-bf2d-3817aa5703dc",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.query }}",
+        "options": {
+          "systemMessage": "Extract the origin and destination from the user's message. Return only a valid JSON object like this:\n\n{\n  \"origin\": \"Tempe, AZ\",\n  \"destination\": \"Grand Canyon, AZ\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        -280,
+        140
+      ],
+      "id": "35784bc6-c03c-4ec2-a885-c81acf6754de",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -320,
+        320
+      ],
+      "id": "de68978b-40fa-4959-94b0-98bb5d1a28fb",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "pVZtjtArJrY0N9aA",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -480,
+        -60
+      ],
+      "id": "4933e337-074d-45ec-8889-bd8d65b9c140",
+      "name": "When chat message received",
+      "webhookId": "9378546a-2b77-489b-99d9-2a3ad345cc8f"
+    },
+    {
+      "parameters": {
+        "url": "https://maps.googleapis.com/maps/api/directions/json",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "origin",
+              "value": "={{$json[\"origin\"]}}"
+            },
+            {
+              "name": "destination",
+              "value": "={{$json[\"destination\"]}}"
+            },
+            {
+              "name": "key",
+              "value": "your_maps_api_key_here"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        300,
+        140
+      ],
+      "id": "3b3c8975-bd69-47d1-8be2-219c75999eb8",
+      "name": "HTTP Request2"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const duration = $json.routes[0].legs[0].duration.text;\nconst origin = encodeURIComponent($json.routes[0].legs[0].start_address);\nconst destination = encodeURIComponent($json.routes[0].legs[0].end_address);\nconst embedUrl = `https://www.google.com/maps/embed/v1/directions?key=AIzaSyAyPn_Ref8jh_cDnw3A9b06bNgRZk1Zzbs&origin=${origin}&destination=${destination}`;\n\nreturn {\n  json: {\n    type: \"map\",\n    text: `It will take approximately ${duration} to get to ${$json.routes[0].legs[0].end_address}, sir. Shall I call ahead and inform them of your fashionably late arrival?`,\n    reply: `It will take approximately ${duration} to get to ${$json.routes[0].legs[0].end_address}, sir. Shall I call ahead and inform them of your fashionably late arrival?`,\n    mapEmbed: embedUrl\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        540,
+        140
+      ],
+      "id": "a45d117d-6d48-4f99-855c-b2556a2a4181",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parse the JSON string returned by the AI agent\nlet parsed;\n\ntry {\n  parsed = JSON.parse($json.output);\n} catch (e) {\n  return {\n    json: {\n      error: \"Failed to parse AI agent output\",\n      original: $json.output\n    }\n  };\n}\n\nreturn {\n  json: parsed\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        140
+      ],
+      "id": "15f5c50d-85d0-4488-87fe-e93406031204",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request2": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bc21ea55-1d76-4e6b-81fc-4e5071e0b2d7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6fad63cfe1150588c1687ad0417552b31a7abff86d996285cbdc32fee45e31fd"
+  },
+  "id": "tyFyLWXPBsJlPkWA",
+  "tags": []
+}
