@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
-webhook_url = "http://localhost:5678/webhook/eve-postcall"
+webhook_url = "your_n8n_webhook_url"
 
 # Initialize the OpenAI client
 client = OpenAI(api_key=api_key)
