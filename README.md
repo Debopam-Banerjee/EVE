@@ -78,7 +78,6 @@ This will capture a frame, optimize it, and output a base64 string for imageAgen
 
 > The script includes auto-exposure stabilization and JPEG compression for faster GPT-4o upload.
 
-Here’s the enhanced version of your `README.md` with collapsible `details` sections to keep things clean and organized:
 
 ---
 
@@ -229,16 +228,6 @@ Access the UI at: [http://localhost:5678](http://localhost:5678)
 
 ---
 
-```
-
-Let me know if you'd like to include:
-- Screenshots for each step
-- GitHub badges (build, license, etc.)
-- Or a copy-paste `.env.example` file for users to rename and fill in
-```
-
-
----
 
 ## 🔄 How It Works
 
