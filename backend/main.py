@@ -15,7 +15,7 @@ from typing import Optional
 
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
-WEBHOOK_URL = "http://localhost:5678/webhook/eve-postcall"
+WEBHOOK_URL = "your_n8n_webhook_url"
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 app = FastAPI()
