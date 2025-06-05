@@ -1,6 +1,7 @@
 # Eve: The Ultimate Personal Assistant (n8n + GPT + Python)
 
-<img width="1439" alt="image" src="https://github.com/user-attachments/assets/dc3cf868-c97b-4e8c-b927-19d92f78dce6" />
+<img width="1120" alt="image" src="https://github.com/user-attachments/assets/a0d8b653-bc87-4f9f-92ca-445ad2a148fc" />
+
 
 
 Welcome to **Eve**, your emotion-aware, visually-intelligent, memory-capable personal assistant powered by **n8n**, **OpenAI GPT-4o**, and **Python**. Eve can:
