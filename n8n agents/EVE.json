@@ -1,0 +1,715 @@
+{
+  "name": "EVE",
+  "nodes": [
+    {
+      "parameters": {
+        "name": "emailAgent",
+        "description": "Call this tool for any email actions.",
+        "workflowId": {
+          "__rl": true,
+          "value": "yzRy4tZFn1eh6Hiz",
+          "mode": "list",
+          "cachedResultName": "email agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -920,
+        400
+      ],
+      "id": "44d92de9-aaed-46bb-8d2a-75e62dc24c8e",
+      "name": "Email Agent"
+    },
+    {
+      "parameters": {
+        "name": "contactAgent",
+        "description": "Call this tool for any contact related actions.",
+        "workflowId": {
+          "__rl": true,
+          "value": "UvCpl7JRGGv30bkf",
+          "mode": "list",
+          "cachedResultName": "contact agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -640,
+        400
+      ],
+      "id": "2ee20e46-646a-4645-9d46-44d342857894",
+      "name": "Contact Agent"
+    },
+    {
+      "parameters": {
+        "name": "contentCreator",
+        "description": "Call this tool to create blog posts.",
+        "workflowId": {
+          "__rl": true,
+          "value": "K01Nf8k2TZAcMxfa",
+          "mode": "list",
+          "cachedResultName": "content creator agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -500,
+        400
+      ],
+      "id": "0878170e-eced-47a3-940e-db2da6e99a3a",
+      "name": "Content Creator Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        140,
+        400
+      ],
+      "id": "22fac4f4-4de8-44c3-a840-4219eae58dae",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "name": "calendarAgent",
+        "description": "Call this tool for any calendar action.",
+        "workflowId": {
+          "__rl": true,
+          "value": "t7AK6vB6YW1FDsja",
+          "mode": "list",
+          "cachedResultName": "calendar agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -780,
+        400
+      ],
+      "id": "77d29c91-eabe-4908-9ec1-b8f83dd5c2fc",
+      "name": "Calendar Agent"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ \n  {\n    reply: $json.reply,\n    mapEmbed: $json.mapEmbed,\n    type: $json.type,\n    text: $json.text\n  }\n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        -20,
+        -20
+      ],
+      "id": "ddd5aaee-4c43-475a-a0de-68a02c073510",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -1180,
+        400
+      ],
+      "id": "fcefb0ae-32aa-4d61-85cc-a7b21d7705f0",
+      "name": "4o",
+      "credentials": {
+        "openAiApi": {
+          "id": "pVZtjtArJrY0N9aA",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.headers.host }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -1040,
+        400
+      ],
+      "id": "5970bdca-e2d1-4a89-a42c-550a683e8827",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "public": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1440,
+        -160
+      ],
+      "id": "473d2da3-437a-41a5-9a11-a532683383ec",
+      "name": "When chat message received",
+      "webhookId": "d71cde2e-452b-4be7-a1b0-116203d89d2a"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        20,
+        400
+      ],
+      "id": "bee9add8-6441-4d29-9597-36050752ba84",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "HPzubmlmJ2DHNUjp",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "imageAgent",
+        "description": "Call this tool to create blog posts.",
+        "workflowId": {
+          "__rl": true,
+          "value": "2548K5VfxadG6vqW",
+          "mode": "list",
+          "cachedResultName": "image agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -360,
+        400
+      ],
+      "id": "28265649-9cb4-4069-b75f-b3ca7c4505b3",
+      "name": "scan surroundings"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.query }}",
+        "options": {
+          "systemMessage": "=# Overview\nYou are the ultimate personal assistant with the ability to add and read \"memories\" about the user. \nDo NOT use any Markdown (no `** … **`). Return exactly plain text.\nFor any travel-related question (e.g., asking for directions, travel time, or route), You are an AI assistant that must always respond in one of two JSON formats:\n\n1) **Travel/Directions requests**  \n   If the user is asking about travel time, directions, distance, or routes, you MUST return exactly this structure (no extra keys, no markdown, no arrays):\n\n   {\n     \"type\": \"map\",\n     \"reply\":  \"<a short human‐readable summary, e.g. 'It will take 1 hour and 40 minutes to drive from Tucson to Phoenix.'>\",\n     \"text\":   \"<a sentence that can be embedded in a chat UI, e.g. 'You can follow the directions here: https://www.google.com/maps/embed/v1/directions?key=API_KEY&origin=Tucson%2C%20AZ%2C%20USA&destination=Phoenix%2C%20AZ%2C%20USA'>\",\n     \"mapEmbed\": \"<the raw Google Maps embed URL (the same URL that appears inside your `text` link)>\"\n   }\n\n   - `\"type\"` must be the literal string `\"map\"`.  \n   - `\"reply\"`, `\"text\"`, and `\"mapEmbed\"` must always be present.  \n   - Do **not** add any extra fields (e.g. no `“error”`, no `“foo”`).  \n   - Do **not** wrap this object in `[...]`; send exactly a single JSON object.\n\n2) **Non‐Travel requests**  \n   If the user’s question is NOT about routes, distance, or travel time—e.g. “What’s the weather?”, “How are you?”, “Tell me a joke”—you MUST return exactly this structure (no extra keys):\n\n   {\n     \"type\": \"text\",\n     \"reply\": \"<your detailed, natural‐language answer here>\"\n     \"text\" : null\n     \"mapEmbed\": null\n   }\n\n   - `\"type\"` must be the literal string `\"text\"`.  \n   - `\"reply\"` must contain the full answer to the user’s question (as plain text).  \n   - Do **not** include any fields other than `\"type\"` and `\"reply\"`.  \n   - Do **not** wrap in an array or add markdown; output a single JSON object.\n\n**IMPORTANT**  \n• Always output _only_ the JSON object. Do not prepend or append any explanation or markdown fences.  \n• If the model “hints” about multiple options (e.g. “Here are two possible answers”), it must still pick one schema or the other, and emit exactly one object.\n\n---\n\n### Example Interactions\n\n**User:** “How long to drive from Phoenix to L.A.?”  \n**Assistant (must emit):**\n```json\n{\n  \"type\":\"map\",\n  \"reply\":\"It will take approximately five hours and 37 minutes to drive from Phoenix to Los Angeles.\",\n  \"text\":\"You can follow the directions here: https://www.google.com/maps/embed/v1/directions?key=AIzaSyAyPn_Ref8jh_cDnw3A9b06bNgRZk1Zzbs&origin=Phoenix%2C%20AZ%2C%20USA&destination=Los%20Angeles%2C%20CA%2C%20USA\",\n  \"mapEmbed\":\"https://www.google.com/maps/embed/v1/directions?key=AIzaSyAyPn_Ref8jh_cDnw3A9b06bNgRZk1Zzbs&origin=Phoenix%2C%20AZ%2C%20USA&destination=Los%20Angeles%2C%20CA%2C%20USA\"\n}\n\n\nDo not respond in markdown, natural sentences, or anything outside a valid JSON object.\n\nTo add a new memory or insight to the top of your list of recent memories you can use the memory_tool which allows you to add short 1 sentence insights about the user to your memory for the future, in order to help you customize your response output. \nYou don't have to always \"customize\" based on the memories, but if there is a good reason to customize your response you can use the memories below to do so. These are memories that have been added by you. If you need to learn more about the user for the future you can ask questions in order to take note of their preferences. \nUse your current memories of the user to recall past insights about them. \nRead your most recent memories here: \n{{ $json.Memory.join('\\n') }}\nTailor your response based on relevant memories if you find that a memory is relevant to the response. \nIf the user’s message is vague or refers to something like “that,” “it,” or “there,” assume they are referring to the last item mentioned in the conversation. Maintain short-term conversational memory for coherence.\nAlways output your final response as a conversational piece rather than a list or blog post. If you must make a list keep it simple and don't add too much hierarchy only share the most important notes! After thinking of your response, consider the TLDR version and always give a conversational, cheeky fun reply while remaining assertive, helpful and not too playful. Five a meek tone to your response. Your job is to send the user's query to the correct tool. You should never be writing emails, or creating even summaries, you just need to call the correct tool.\n\n## Tools\n- emailAgent: Use this tool to take action in email\n- calendarAgent: Use this tool to take action in calendar\n- contactAgent: Use this tool to get, update, or add contacts\n- contentCreator: Use this tool to create blog posts\n- SerpAPI: Use this tool to search the web\n- mapsAgent: Use this tool for any questions about:\n  - Travel time between locations\n  - Directions\n  - Distance calculations\n  \n- imageAgent: Use this tool when the user asks anything that involves visual recognition or environmental awareness. Examples include:\n  - \"How do I look?\" → Use imageAgent with `personal_appearance` focus\n  - \"What emotion am I showing?\" or \"Check my emotion\" → Use imageAgent with `facial_expression` focus (you can save this iformation in {{ $json.Memory }} with a timestamp for wellness tracking)\n  - \"What am I holding?\" or \"What's in this image?\" → Use imageAgent with `object_recognition`\n  - \"Where am I?\" or \"What’s around me?\" → Use imageAgent with `scene_context`\n  - “Is the light on in this room?”\n\n## Rules\n- Some actions require you to look up contact information first. For the following actions, you must get contact information and send that to the agent who needs it:\n  - sending emails\n  - drafting emails\n  - creating calendar event with attendee\n- If visual context is implied (e.g. questions about appearance, items, surroundings), always call the `imageAgent` first.\n\n- If follow-up questions refer to an object previously identified by the imageAgent (e.g. “how many calories are in this?”), use `SerpAPI` to search for that item.\n- If a user asks about real-time or current events (e.g. news, weather, games), use `SerpAPI`.\n- If a question involves people (e.g. sending an email or calendar invite), always call `contactAgent` first to get their details.\n\n## Context Memory\n- If `lastObject` is present, and the user's message includes vague references like \"this\", \"that\", \"it\", or \"there\", replace it with `lastObject` before answering or calling any tools.\n\n## Examples\n### 1) Object Recognition\n- Input: “What am I holding?”\n  - Action: Use imageAgent\n  - Output: “You are holding a can of Coca-Cola, sir. Classic choice.”\n\n### 2) Personal Appearance\n- Input: “Do I look good?”\n  - Action: Use imageAgent\n  - Output: “Absolutely. Looking dashing as always.”\n\n### 2) Personal Appearance\n- Input: “which outfit do you think I should wear?”\n  - Action: Use imageAgent\n  - Actiom: use serpAPI to get weather details for the location user mentions if not, use current location chandler, AZ\n  - Output: “You should wear the white tshirt, the black coat might be too much for the Arizona heat”\n\n### 3) Follow-Up Context\n- Input: “What is this drink?” → imageAgent identifies “Red Bull”\n- Follow-up: “How many calories are in this?”\n  - Action: Use SerpAPI to find calorie content\n  - Output: “Red Bull contains approximately 110 calories per 8.4 oz can.”\n\n### 4) Scheduled Task\n- Input: “Schedule a meeting with Sarah for tomorrow at 3 PM”\n  - Action: Use contactAgent to get Sarah’s info\n  - Action: Use calendarAgent to create the meeting\n  - Output: “Meeting scheduled with Sarah for 3 PM tomorrow.”\n### 5) map agent Examples:\n  - \"How long to get from X to Y?\"\n  - \"What's the best route to X?\"\n  - \"How far is X from Y?\"\n1) \n- Input: send an email to nate herkelman asking him what time he wants to leave\n  - Action: Use contactAgent to get nate herkelman's email\n  - Action: Use emailAgent to send the email. You will pass the tool a query like \"send nate herkelman an email to ask what time he wants to leave. here is his email: [email address]\n- Output: The email has been sent to Nate Herkelman. Anything else I can help you with?\n\n\n## Final Reminders\nHere is the current date/time: {{ $now }}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        -660,
+        -20
+      ],
+      "id": "c23998c4-89c6-4c12-8200-50762e9ae57a",
+      "name": "EVE"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "eve-postcall",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -1440,
+        -40
+      ],
+      "id": "fc3f505a-ef0d-437a-abef-d26b44478846",
+      "name": "Webhook",
+      "webhookId": "dced53d2-e10e-4357-9d22-4f8db19efa7c"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appfCCLHZqSGtGzPa",
+          "mode": "list",
+          "cachedResultName": "Memory",
+          "cachedResultUrl": "https://airtable.com/appfCCLHZqSGtGzPa"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblQi9p3duKPzPF3R",
+          "mode": "list",
+          "cachedResultName": "memory",
+          "cachedResultUrl": "https://airtable.com/appfCCLHZqSGtGzPa/tblQi9p3duKPzPF3R"
+        },
+        "returnAll": false,
+        "limit": 50,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -1240,
+        60
+      ],
+      "id": "dc3af566-ab28-4a36-8651-dd427415ba24",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "Dm3dv8DjhxQpXlkN",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "Memory"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1060,
+        60
+      ],
+      "id": "479b2f78-c522-436b-8452-916f02632acb",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineAll",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -860,
+        -20
+      ],
+      "id": "6204437f-1228-49f8-8bd5-65f922d09a0a",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appfCCLHZqSGtGzPa",
+          "mode": "list",
+          "cachedResultName": "Memory",
+          "cachedResultUrl": "https://airtable.com/appfCCLHZqSGtGzPa"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblQi9p3duKPzPF3R",
+          "mode": "list",
+          "cachedResultName": "memory",
+          "cachedResultUrl": "https://airtable.com/appfCCLHZqSGtGzPa/tblQi9p3duKPzPF3R"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Memory": "={{ $fromAI('add_memory', 'write a memory for future reference about the user in 140 characters or less') }}"
+          },
+          "matchingColumns": [
+            "Memory"
+          ],
+          "schema": [
+            {
+              "id": "Memory",
+              "displayName": "Memory",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Time created",
+              "displayName": "Time created",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtableTool",
+      "typeVersion": 2.1,
+      "position": [
+        -100,
+        400
+      ],
+      "id": "d85219ee-39ec-449a-8433-f00715425813",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "Dm3dv8DjhxQpXlkN",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "#add youtube, spotify, docs, resume screener, phone caller\n\nopen system apps"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -660,
+        580
+      ],
+      "typeVersion": 1,
+      "id": "d4af6f73-515b-487b-b163-cf83762dc363",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "name": "mapsAgent",
+        "description": "Call this tool for any directions or travel time queries.",
+        "workflowId": {
+          "__rl": true,
+          "value": "tyFyLWXPBsJlPkWA",
+          "mode": "list",
+          "cachedResultName": "maps"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        400
+      ],
+      "id": "0d23fea6-0cb5-4579-807f-d8a0ca754634",
+      "name": "maps"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let raw = $json.output;\n\nif (typeof raw === \"string\") {\n  raw = raw.trim();\n\n  // CASE 1: “raw” starts with “{” → try to parse a top‐level JSON object + trailing text\n  if (raw.startsWith(\"{\")) {\n    let depth = 0;\n    let endIndex = -1;\n\n    for (let i = 0; i < raw.length; i++) {\n      if (raw[i] === \"{\") {\n        depth++;\n      } else if (raw[i] === \"}\") {\n        depth--;\n        if (depth === 0) {\n          endIndex = i + 1;\n          break;\n        }\n      }\n    }\n\n    if (endIndex > 0) {\n      const jsonOnly = raw.slice(0, endIndex);\n      const trailing = raw.slice(endIndex).trim();\n\n      let parsed;\n      try {\n        parsed = JSON.parse(jsonOnly);\n      } catch (e) {\n        parsed = null;\n      }\n\n      if (parsed && typeof parsed === \"object\") {\n        // If there is trailing text, append it onto parsed.reply\n        if (trailing) {\n          parsed.reply = (parsed.reply || \"\").trim() + \" \" + trailing;\n        }\n        raw = parsed;\n      } else {\n        raw = null;\n      }\n    } else {\n      raw = null;\n    }\n  }\n  // CASE 2: did NOT start with “{” → treat the entire string as a plain‐text reply\n  else {\n    return {\n      json: {\n        reply: raw,\n        type: \"text\",\n        text: null,\n        mapEmbed: null\n      }\n    };\n  }\n} \n\n// If parsing failed, or raw is not an object at this point, send the “sorry” fallback\nif (!raw || typeof raw !== \"object\") {\n  return {\n    json: {\n      reply: \"Sorry, something went wrong.\",\n      type: \"text\",\n      text: \"Oops! I'm afraid I couldn’t understand that, sir.\",\n      mapEmbed: null\n    }\n  };\n}\n\n// At this point “raw” is the parsed object from the LLM’s JSON.\n// Return exactly those four fields:\nreturn {\n  json: {\n    reply:   raw.reply    || raw.text    || \"I’m not sure what to say.\",\n    type:    raw.type     || \"text\",\n    text:    raw.text     || raw.reply   || \"\",\n    mapEmbed: raw.mapEmbed || null\n  }\n};\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -280,
+        -20
+      ],
+      "id": "8166a0b4-6063-466f-ace4-09f1d6a83d48",
+      "name": "Code"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "commonly-solid-oarfish.ngrok-free.app",
+            "user-agent": "Python/3.12 aiohttp/3.11.16",
+            "content-length": "40",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate",
+            "content-type": "application/json",
+            "x-forwarded-for": "34.67.146.145",
+            "x-forwarded-host": "commonly-solid-oarfish.ngrok-free.app",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "query": "What drink do i love?"
+          },
+          "webhookUrl": "http://localhost:5678/webhook/eve-postcall",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Email Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Content Creator Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calendar Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4o": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        []
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "scan surroundings": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EVE": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "EVE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "maps": {
+      "ai_tool": [
+        [
+          {
+            "node": "EVE",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a60c834e-a462-4475-a17f-76a02e07d401",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "6fad63cfe1150588c1687ad0417552b31a7abff86d996285cbdc32fee45e31fd"
+  },
+  "id": "IraevdhIyXvtWppF",
+  "tags": []
+}
