@@ -12,7 +12,7 @@ load_dotenv()
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 elevenlabs_client = ElevenLabs(api_key=os.getenv("ELEVENLABS_API_KEY"))
 voice_id = os.getenv("ELEVEN_VOICE_ID")
-webhook_url = "http://localhost:5678/webhook/eve-postcall"  # Changed back to /webhook/ instead of /webhook-test/
+webhook_url = "your_n8n_webhook_url"
 
 def play_in_background(audio_bytes):
     """Play audio in a background thread."""
