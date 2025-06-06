@@ -1,4 +1,4 @@
-# Eve: The Ultimate Personal Assistant (n8n + GPT + Python + Elevenlabs conversational ai and STT)
+# Eve: The Ultimate Personal Assistant (n8n + GPT + Python + ElevenLabs Conversational AI and STT)
 
 <img width="1120" alt="image" src="https://github.com/user-attachments/assets/a0d8b653-bc87-4f9f-92ca-445ad2a148fc" />
 
@@ -29,28 +29,20 @@ Eve can:
 ```bash
 git clone https://github.com/Debopam-Banerjee/EVE.git
 cd EVE
-
 ````
 
 ### 2. Run `n8n` Locally
 
-Install globally:
-
 ```bash
 npm install -g n8n
-```
-
-Start:
-
-```bash
 n8n
 ```
 
-Then visit: [http://localhost:5678](http://localhost:5678)
+Visit [http://localhost:5678](http://localhost:5678)
 
-### 3. Import Workflows into `n8n`
+### 3. Import Workflows
 
-Go to **Workflows > Import** in the UI, and upload the `.json` files from the `n8n agents/` folder:
+In the n8n UI, go to **Workflows > Import**, then upload:
 
 * `image_agent.json`
 * `__Email_Agent.json`, `__Contact_Agent.json`, etc.
@@ -79,7 +71,7 @@ VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
 
 * [OpenAI API Key](https://platform.openai.com/account/api-keys)
 * [ElevenLabs API](https://elevenlabs.io/)
-* [Google Maps API Key](https://console.cloud.google.com/): Enable **Maps JavaScript API**
+* [Google Maps API](https://console.cloud.google.com/): Enable **Maps JavaScript API**
 
 </details>
 
@@ -88,42 +80,40 @@ VITE_GOOGLE_MAPS_API_KEY=your-google-maps-api-key
 <details>
 <summary>🐍 Step 1: Set Up Python Backend</summary>
 
-1. Navigate to the backend folder:
+```bash
+cd backend
+```
 
-   ```bash
-   cd backend
-   ```
+**Create and activate a virtual environment:**
 
-2. Create and activate a virtual environment:
+* Windows:
 
-   * **Windows (PowerShell):**
+  ```powershell
+  python -m venv venv
+  .\venv\Scripts\Activate.ps1
+  ```
 
-     ```powershell
-     python -m venv venv
-     .\venv\Scripts\Activate.ps1
-     ```
+* macOS/Linux:
 
-   * **macOS/Linux:**
+  ```bash
+  python3 -m venv venv
+  source venv/bin/activate
+  ```
 
-     ```bash
-     python3 -m venv venv
-     source venv/bin/activate
-     ```
+**Install dependencies:**
 
-3. Install dependencies:
+```bash
+pip install fastapi uvicorn pydantic openai python-dotenv elevenlabs
+pip freeze > requirements.txt
+```
 
-   ```bash
-   pip install fastapi uvicorn pydantic openai python-dotenv elevenlabs
-   pip freeze > requirements.txt
-   ```
+**Start the server:**
 
-4. Run the backend server:
+```bash
+uvicorn app:app --reload
+```
 
-   ```bash
-   uvicorn app:app --reload
-   ```
-
-Backend will be available at: [http://localhost:8000](http://localhost:8000)
+Backend will run at [http://localhost:8000](http://localhost:8000)
 
 </details>
 
@@ -132,25 +122,13 @@ Backend will be available at: [http://localhost:8000](http://localhost:8000)
 <details>
 <summary>💻 Step 2: Run the Frontend (Vite + React)</summary>
 
-1. Navigate to the frontend folder:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. Start the frontend server:
-
-   ```bash
-   npm run dev
-   ```
-
-Frontend will run at: [http://localhost:5173](http://localhost:5173)
+Frontend will run at [http://localhost:5173](http://localhost:5173)
 
 </details>
 
@@ -159,21 +137,21 @@ Frontend will run at: [http://localhost:5173](http://localhost:5173)
 <details>
 <summary>⚙️ Step 3: Start <code>n8n</code> Locally</summary>
 
-Install globally (if not already done):
+If not installed:
 
 ```bash
 npm install -g n8n
 ```
 
-Start n8n:
+Start:
 
 ```bash
 n8n
 ```
 
-Then open: [http://localhost:5678](http://localhost:5678)
+Access [http://localhost:5678](http://localhost:5678)
 
-> Or use the [n8n desktop app](https://n8n.io/download) for a GUI-based experience.
+> Or use the [n8n desktop app](https://n8n.io/download)
 
 </details>
 
@@ -182,14 +160,84 @@ Then open: [http://localhost:5678](http://localhost:5678)
 <details>
 <summary>🧠 Step 4: Import Workflows</summary>
 
-1. Open [http://localhost:5678](http://localhost:5678)
+1. Visit [http://localhost:5678](http://localhost:5678)
 2. Go to **Workflows > Import**
-3. Import JSON workflows from the `n8n agents/` folder:
+3. Upload:
 
-   * `image_agent.json`
-   * `__Email_Agent.json`
-   * `__Contact_Agent.json`
-   * And others…
+* `image_agent.json`
+* `__Email_Agent.json`
+* `__Contact_Agent.json`
+* (And others…)
+
+</details>
+
+---
+
+<details>
+<summary>🔊 ElevenLabs Webhook Setup (via <code>ngrok</code>)</summary>
+
+To receive **voice responses and webhook events from ElevenLabs** while running Eve locally, you must expose your backend using `ngrok`.
+
+---
+
+### 🧪 Why ngrok?
+
+ElevenLabs requires a **public HTTPS URL** to deliver webhook events. `ngrok` tunnels your local server to the internet securely.
+
+---
+
+### ⚙️ Setup Steps
+
+1. Install ngrok:
+
+   ```bash
+   npm install -g ngrok
+   ```
+
+2. Authenticate:
+
+   ```bash
+   ngrok config add-authtoken <your_auth_token>
+   ```
+
+3. Reserve a free subdomain (in the ngrok dashboard), e.g.:
+
+   ```
+   your-url.ngrok-free.app
+   ```
+
+4. Start your backend:
+
+   ```bash
+   uvicorn app:app --reload
+   ```
+
+5. Expose it via ngrok:
+
+   ```bash
+   ngrok http 8000 --domain=your-url.ngrok-free.app
+   ```
+
+6. Set your ElevenLabs webhook to:
+
+   ```
+   https://your-url.ngrok-free.app/webhook/eve-postcall
+   ```
+
+---
+
+### 💡 Optional: Use in .env
+
+```env
+WEBHOOK_URL=https://your-url.ngrok-free.app/webhook/eve-postcall
+```
+
+In Python:
+
+```python
+import os
+WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+```
 
 </details>
 
@@ -207,20 +255,20 @@ Then open: [http://localhost:5678](http://localhost:5678)
 
 ## 🔄 How It Works
 
-1. **Webcam Triggered:** A Python script captures your webcam image
-2. **ImageAgent:** Sends image to GPT-4o for visual analysis
-3. **Emotion Check:** Returns your emotional state (e.g., "neutral", "happy")
-4. **Memory Module:** Logs emotion + timestamp for context-aware responses
+1. **Webcam Triggered** — Python captures your webcam image
+2. **ImageAgent** — Sends image to GPT-4o for analysis
+3. **Emotion Check** — Detects mood from the image
+4. **Memory Module** — Logs emotion & context for future interaction
 
 ---
 
 ## 📁 Key Files
 
-* `backend/` — FastAPI app with assistants
-* `frontend/` — Vite + React interface with TTS, webcam, map, and messaging UI
-* `n8n agents/` — JSON workflows for automations and AI routing
-* `capture_and_encode.py` — Webcam capture + base64 encoder for GPT
-* `.env.example` — Sample environment file
+* `backend/` — FastAPI backend
+* `frontend/` — Vite + React frontend
+* `n8n agents/` — JSON-based automation flows
+* `capture_and_encode.py` — Webcam capture script
+* `.env.example` — Sample environment configuration
 
 ---
 
@@ -233,23 +281,18 @@ Pull requests are welcome!
 
 ## 🌍 License
 
-MIT License. Built for fun, productivity, and peace of mind.
+MIT License — built for fun, productivity, and peace of mind.
 
 ---
 
 ## ✨ Demo
 
-[🎥 A full walkthrough video is coming soon. Stay tuned!](https://www.linkedin.com/feed/update/urn:li:activity:7335722019876913152/) 
+[🎥 Full walkthrough video coming soon](https://www.linkedin.com/feed/update/urn:li:activity:7335722019876913152/)
 
 ---
 
 ## 💬 Questions?
 
-Open an issue or contact me directly for collaboration or customization.
+Open an issue or contact me directly for help, collaboration, or custom features.
 
-```
-
----
-
-Let me know if you'd like a `README.md` badge header (license, build, tech stack), or if you want to auto-generate `.env.example` and include it in the repo.
 ```
