@@ -104,7 +104,7 @@ cd backend
 **Install dependencies:**
 
 ```bash
-pip install fastapi uvicorn pydantic openai python-dotenv elevenlabs
+pip install fastapi uvicorn pydantic openai python-dotenv elevenlabs pyaudio
 pip freeze > requirements.txt
 ```
 
