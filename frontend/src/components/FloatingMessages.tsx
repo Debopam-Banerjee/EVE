@@ -26,7 +26,7 @@ const FloatingMessages: React.FC<FloatingMessagesProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [visibleRange, setVisibleRange] = useState({ start: 0, end: messages.length });
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: messages.length, isNearBottom: true });
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [size, setSize] = useState({ width: 400, height: 600 }); // Increased initial size
   const [isDragging, setIsDragging] = useState(false);
@@ -122,14 +122,14 @@ const FloatingMessages: React.FC<FloatingMessagesProps> = ({
     const scrollHeight = container.scrollHeight;
     const clientHeight = container.clientHeight;
     
-    // Calculate which messages should be visible based on scroll position
-    const messageHeight = 80; // Approximate height per message
-    const visibleCount = Math.ceil(clientHeight / messageHeight);
-    const scrolledMessages = Math.floor(scrollTop / messageHeight);
+    // Simple calculation: if we're scrolled near the bottom, show recent messages with full opacity
+    const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+    const isNearBottom = scrollPercentage > 0.8; // If scrolled more than 80% down
     
     setVisibleRange({
-      start: Math.max(0, scrolledMessages),
-      end: Math.min(messages.length, scrolledMessages + visibleCount + 2)
+      start: 0,
+      end: messages.length,
+      isNearBottom
     });
   };
 
@@ -193,16 +193,19 @@ const FloatingMessages: React.FC<FloatingMessagesProps> = ({
         <div className="flex-1" />
         <div className="flex flex-col gap-1">
           {messages.map((message, index) => {
-            const isInVisibleRange = index >= visibleRange.start && index <= visibleRange.end;
             const distanceFromEnd = messages.length - 1 - index;
             let opacity = 1;
             
-            if (isInVisibleRange) {
-              if (distanceFromEnd >= 4) opacity = 0.3;
-              else if (distanceFromEnd >= 2) opacity = 0.6;
+            // Apply fade effect only when not near bottom of scroll
+            if (visibleRange.isNearBottom) {
+              // Near bottom: fade older messages
+              if (distanceFromEnd >= 6) opacity = 0.2;
+              else if (distanceFromEnd >= 4) opacity = 0.4;
+              else if (distanceFromEnd >= 2) opacity = 0.7;
               else opacity = 1;
             } else {
-              opacity = 0.3;
+              // Scrolled up: show all messages with full opacity
+              opacity = 1;
             }
 
             return (
